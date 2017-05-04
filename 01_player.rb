@@ -4,59 +4,176 @@
 puts "01"
 puts "なぜあなたはJavaでオブジェクト指向開発ができないのか"
 puts "のテストプログラム"
-
-##############################
-# まずクラスを作ってみる(楽しいRuby 復習 P126)
-class HelloWorld
-  def initialize(myname = "Ruby") # initializeメソッド
-    @name = myname                # インスタンス変数の初期化
-  end
-
-  def hello
-    puts "Hello, world. I am #{@name}."
-  end
-end
-# bob = HelloWorld.new("Bob")
-# alice = HelloWorld.new("Alice")
-# bob.hello
-# alice.hello
-##############################
-
+puts ""
 # なぜJavaのP66をRubyで書いてみる
 
+#--------------------
 # ジャンケンのプレイヤーを表すクラス
+#--------------------
 class Player
-  # ジャンケンの手を表す定数
-  STONE = 0
-  SCISSORS = 1
-  RAPER = 2
-
+  # ---------
   # プレイヤーの属性
-  def initialize(name = "tmp")
+  # ---------
+  def initialize(name = "tmp")  # javaでいうコンスタントかな
     # インスタンス変数(インスタンスごとに持つ変数)
     @name = name                # 名前
     @winCount = 0               # 勝った回数
   end
   # プレイヤー確認出力
-  def putsName
-    puts "I am #{@name}."
+  def getName
+    return @name
+    # puts "I am #{@name}."
   end
 
+  # ---------
+  # プレイヤークラスの操作
+  # ---------
+  # ジャンケンの手を出す
+  def showHand
+    hand = Random.rand(3) # 0から3未満(整数)
+    return hand           # 整数を返すので、定数いらんな
+  end
+
+  # 審判から詳細を聞く
+  def notifyResult(result)
+    if result == true
+      # 勝った場合は勝ち数を加算
+      @winCount +=1
+    end
+  end
+
+  # 自分の勝った回数を答える
   def getWinCount
-    @winCount +=1
-    return "#{@name}の勝った回数は、#{@winCount} 回です"
+    return @winCount
+    # return "#{@name}の勝った回数は、#{@winCount} 回です"
   end
 
 end
 
-p Player::STONE
+#--------------------
+# ジャンケンの審判を表すクラス
+#--------------------
+class Judge
+  # 定数定義(大文字で始まる)
+  STONE = 0      # グー
+  SCISSORS = 1   # チョキ
+  PAPER = 2      # パー
 
+  def initialize(name = "tmp")  # javaでいうコンスタントかな
+    # インスタンス変数(インスタンスごとに持つ変数)
+    @name = name                # 名前
+  end
+  # ジャンケンを開始する
+  def startJanken(player1, player2)
+    puts "【ジャンケン開始】"
+    # forを使い複数回行う
+    for cnt in 1..3
+      puts "#{cnt} 回戦目"
+      winner = judgeJanken(player1, player2) # 勝った方のオブジェクトが返る
+      if winner != nil
+        print winner.getName, "さんが勝ちました\n"
+        # 勝ったプレイヤーへ結果を伝える
+        winner.notifyResult(true)
+      else
+        print "引き分けです\n"
+      end
+    end
+    # ジャンケンの終了を宣言
+    puts "【ジャンケン終了】"
+
+    # 最終的な勝者の判定
+    finalWinner = judgeFinalWinner(player1, player2)
+    if finalWinner != nil
+      print "最終勝者は", finalWinner.getName, "さんです"
+      print "[", finalWinner.getWinCount, "勝]", "\n"
+    else
+      print "引き分けでした\n"
+    end
+
+  end
+
+  # 「ジャンケン・ポン」と声をかけ、
+  # プレイヤーの手を見て、どちらが勝ちか判定する
+  def judgeJanken(player1, player2)
+    winner = nil
+    # プレイヤー1の手を出す
+    player1hand = player1.showHand
+
+    # プレイヤー2の手を出す
+    player2hand = player2.showHand
+
+    # それぞれの手を表示する
+    printHand(player1hand)
+    print " vs "
+    printHand(player2hand)
+    print "\n"
+
+    # プレイヤー1が勝つ場合
+    if (player1hand == STONE && player2hand == SCISSORS) ||
+       (player1hand == SCISSORS && player2hand == PAPER) ||
+       (player1hand == PAPER && player2hand == STONE)
+      winner = player1
+    # プレイヤー2が勝つ場合
+    elsif (player2hand == STONE && player1hand == SCISSORS) ||
+          (player2hand == SCISSORS && player1hand == PAPER) ||
+          (player2hand == PAPER && player1hand == STONE)
+      winner = player2
+    else
+      # どちらでもない場合は引き分け(nullを返す)
+    end
+
+    return winner
+  end
+
+  # 最終的な勝者を判定する
+  def judgeFinalWinner(player1, player2)
+    winner = nil
+
+    # player1の勝ち数を聞く
+    player1WinCount = player1.getWinCount
+
+    # player2の勝ち数を聞く
+    player2WinCount = player2.getWinCount
+
+    if player1WinCount > player2WinCount
+      # プレイヤー1の勝ち
+      winner = player1
+    elsif player1WinCount < player2WinCount
+      # プレイヤー2の勝ち
+      winner = player2
+    end
+    # どちらでもない場合はnullを返す
+    return winner
+  end
+
+  # ジャンケンの手を表示する
+  def printHand(hand)
+    case hand
+    when STONE
+      print "グー"
+    when SCISSORS
+      print "チョキ"
+    when PAPER
+      print "パー"
+    else
+    end
+  end
+end
+
+
+# インスタンス作成
+saito = Judge.new("saito")
 yamada = Player.new("yamada")
-yamada.putsName
-puts yamada.getWinCount
-puts yamada.getWinCount
-
+print "私は、", yamada.getName, "です。よろしく\n" # メソッド呼び出し
 murata = Player.new("murata")
-murata.putsName
-puts murata.getWinCount
+print "私は、", murata.getName, "です。よろしく\n" # メソッド呼び出し
+saito.startJanken(yamada, murata)
 
+
+
+# print "私は、", yamada.getName, "です。よろしく\n" # メソッド呼び出し
+# print "山田さんの手:", yamada.showHand, "\n"
+# puts yamada.getWinCount
+# print "私は、", murata.getName, "です。よろしく\n" # メソッド呼び出し
+# print "村田さんの手:", murata.showHand, "\n"
+# puts murata.getWinCount
