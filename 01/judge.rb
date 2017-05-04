@@ -4,10 +4,10 @@
 # ジャンケンの審判を表すクラス
 #--------------------
 class Judge
-  # 定数定義(大文字で始まる)
-  STONE = 0      # グー
-  SCISSORS = 1   # チョキ
-  PAPER = 2      # パー
+  # 定数定義(大文字で始まる)他クラスの定数を参照
+  STONE = Player::STONE
+  SCISSORS = Player::SCISSORS
+  PAPER = Player::PAPER
 
   def initialize(name = "tmp")  # javaでいうコンスタントかな
     # インスタンス変数(インスタンスごとに持つ変数)
@@ -18,7 +18,7 @@ class Judge
     return @name
   end
   # ジャンケンを開始する
-  def startJanken(player1, player2)
+  def startJanken(player1, player2) # 各プレイヤーのインスタンスを受け取る
     puts "【ジャンケン開始】"
     # forを使い複数回行う
     for cnt in 1..3

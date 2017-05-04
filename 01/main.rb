@@ -12,12 +12,14 @@ puts "[01]"
 # インスタンス作成
 saito = Judge.new("saito")
 print "私[jadgeman]は、", saito.getName, "です。よろしく\n" # メソッド呼び出し
-yamada = Player.new("yamada")
+yamada = Player.new("山田")
 print "私[player]は、", yamada.getName, "です。よろしく\n" # メソッド呼び出し
-murata = Player.new("murata")
+murata = Player.new("村田")
 print "私[player]は、", murata.getName, "です。よろしく\n" # メソッド呼び出し
 puts ""
-saito.startJanken(yamada, murata)
+
+# メソッド呼び出しでジャンケン開始
+saito.startJanken(yamada, murata) # プレイヤーのインスタンスを渡す
 
 
 
