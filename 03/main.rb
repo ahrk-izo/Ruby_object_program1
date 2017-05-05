@@ -20,7 +20,9 @@ yamada = Player.new("山田")
 print "私[player]は、", yamada.getName, "です。よろしく\n" # メソッド呼び出し
 
 # 山田さんに渡す戦略クラスを生成
-yamadaTactics = RandomTactisc.new
+# yamadaTactics = RandomTactics.new # ランダム戦略
+# yamadaTactics = AskTactics.new      # 標準入力戦略
+yamadaTactics = CyclicTactics.new   # グー・チョキ・パーを順番に出す戦略
 
 # 山田さんに戦略クラスを渡す
 yamada.setTactics(yamadaTactics)
@@ -31,7 +33,7 @@ print "私[player]は、", murata.getName, "です。よろしく\n" # メソッ
 puts ""
 
 # 村田さんに渡す戦略クラスを生成
-murataTactics = RandomTactisc.new
+murataTactics = StoneOnlyTactics.new # グー好き戦略
 
 # 村田さんに戦略クラスを渡す
 murata.setTactics(murataTactics)

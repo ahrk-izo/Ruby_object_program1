@@ -57,8 +57,10 @@ class Judge
 
     # それぞれの手を表示する
     printHand(player1hand)
+    print "[", player1.getName, "]"
     print " vs "
     printHand(player2hand)
+    print "[", player2.getName, "]"
     print "\n"
 
     # プレイヤー1が勝つ場合

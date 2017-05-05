@@ -28,7 +28,6 @@ class Player
   # ---------
   # ジャンケンの手を出す
   def showHand
-    # hand = Random.rand(3) # 0から3未満(整数)
     # 与えられた戦略を読んでジャンケンの手を決める
     hand = @tactics_.readTacitcs
     return hand           # 整数を返すので、定数いらんな
